@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JS Topic Doubt Solver & Quiz</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+  <div class="container">
+  <h1>JavaScript Doubt Solver 💡</h1>
+
+  <label for="topicSelect">Select a topic:</label>
+  <select id="topicSelect">
+    <option value="">--Choose a topic--</option>
+    <option value="variables">Variables</option>
+    <option value="data types">Data Types</option>
+    <option value="functions">Functions</option>
+    <option value="loops">Loops</option>
+    <option value="array">Array</option>
+    <option value="if-else">If else</option>
+    <option value="DOM">DOM Manipulation</option>
+    <!-- Add more topics here -->
+  </select>
+
+  <br/><br/>
+  <button onclick="solveDoubt()">Get Explanation & Quiz</button>
+
+  <h2>🧠 Explanation</h2>
+  <pre id="response">Explanation will appear here...</pre>
+
+  <button onclick="startQuiz()" id="startQuizBtn" style="display:none;">Start Quiz</button>
+
+  <div id="quizContainer" style="display:none;">
+    <h2>📝 Quiz</h2>
+    
+    <p id="questionText"></p>
+    <div id="options"></div>
+    <button onclick="nextQuestion()">Next</button>
+  </div>
+
+  <p id="scoreDisplay"></p>
+
+  <script src="script.js"></script>
+</div>
+</body>
+</html>
