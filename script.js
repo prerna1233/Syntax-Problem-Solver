@@ -148,7 +148,7 @@ async function solveDoubt() {
   startQuizBtn.style.display = "none";
 
   try {
-    const res = await fetch("http://localhost:3001/api/getExplanationAndQuiz", {
+    const res = await fetch("https://syntax-problem-solver.onrender.com/api/getExplanationAndQuiz", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ topic })
