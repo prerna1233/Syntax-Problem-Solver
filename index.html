@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,44 +5,579 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JS Topic Doubt Solver & Quiz</title>
   <link rel="stylesheet" href="style.css">
-
+  <style>
+    body {
+      background: linear-gradient(120deg, #e8f5e9 0%, #e3eafc 100%);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      color: #23432a;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .app-shell {
+      display: flex;
+      width: 100vw;
+      min-height: 100vh;
+      background: rgba(255,255,255,0.8);
+      margin: 0;
+      padding: 0;
+    }
+    /* --- Modernized Sidebar --- */
+    .sidebar {
+      background: rgba(255,255,255,0.55);
+      border-radius: 0 28px 28px 0;
+      box-shadow: 8px 0 32px 0 #b2dfdb44, 0 2px 16px #e0ffe0;
+      padding: 36px 22px 24px 0;
+      min-width: 200px;
+      max-width: 260px;
+      width: 22vw;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      position: relative;
+      overflow: visible;
+      z-index: 2;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      margin-left: 44px; /* Increased space from the left edge/accent bar */
+    }
+    .sidebar::before {
+      content: '';
+      position: absolute;
+      left: -28px; top: 0; bottom: 0;
+      width: 18px;
+      border-radius: 0 12px 12px 0;
+      background: linear-gradient(180deg, #00bfa5 0%, #43a047 100%);
+      box-shadow: 2px 0 12px #43a04733;
+      z-index: 1;
+    }
+    .sidebar h1 {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #2e7d32;
+      margin-bottom: 8px;
+      letter-spacing: 1.1px;
+      text-align: left;
+      text-shadow: 0 2px 8px #e0ffe0;
+      z-index: 2;
+      padding-left: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar .topic-section-title {
+      font-size: 1.13rem;
+      font-weight: 700;
+      color: #388e3c;
+      margin-bottom: 10px;
+      margin-top: 0;
+      letter-spacing: 0.5px;
+      text-align: left;
+      z-index: 2;
+      padding-left: 18px;
+    }
+    .topic-list {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: rgba(255,255,255,0.45);
+      border-radius: 22px;
+      border: 1.5px solid #b2dfdb;
+      padding: 20px 0 20px 0;
+      margin-bottom: 0;
+      box-shadow: 0 4px 24px #b2dfdb33;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 2;
+    }
+    .topic-btn {
+      background: rgba(255,255,255,0.8);
+      color: #2e7d32;
+      border: none;
+      border-radius: 999px;
+      padding: 13px 0;
+      font-size: 1.07rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, box-shadow 0.18s, transform 0.13s, border 0.18s;
+      text-align: center;
+      box-shadow: 0 1px 6px #b2dfdb22;
+      width: 92%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-left: 6px solid transparent;
+      position: relative;
+      letter-spacing: 0.2px;
+    }
+    .topic-btn:hover {
+      background: #e0f2f1;
+      color: #256029;
+      box-shadow: 0 2px 12px #b2dfdb44;
+      transform: scale(1.045);
+    }
+    .topic-btn.selected, .topic-btn:focus {
+      background: linear-gradient(90deg, #43a047 0%, #00bfa5 100%);
+      color: #fff;
+      font-weight: 800;
+      box-shadow: 0 4px 18px #43a04733;
+      border-left: 6px solid #00bfa5;
+      outline: none;
+      transform: scale(1.07);
+    }
+    .sidebar .divider {
+      width: 92%;
+      height: 2px;
+      background: linear-gradient(90deg, #b2dfdb 0%, #e0f2f1 100%);
+      margin: 22px auto 14px auto;
+      border-radius: 2px;
+      opacity: 0.8;
+    }
+    .sidebar .actions {
+      margin-top: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 2;
+      padding-left: 18px;
+    }
+    .sidebar button {
+      background: #43a047;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 15px 0;
+      font-size: 1.13rem;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(76, 175, 80, 0.10);
+      transition: background 0.18s, transform 0.12s;
+      min-width: 120px;
+      width: 97%;
+      margin: 0 auto;
+    }
+    .sidebar button:hover, .sidebar button:focus {
+      background: #388e3c;
+      color: #fff;
+      transform: translateY(-2px) scale(1.04);
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 0;
+      margin: 0;
+      background: transparent;
+      min-width: 0;
+    }
+    .card-container {
+      margin-top: 40px;
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      align-items: center;
+      justify-content: center;
+    }
+    .quiz-section, .explanation-area {
+      width: 100%;
+      box-sizing: border-box;
+      border-radius: 18px;
+      box-shadow: 0 4px 24px #b2dfdb33;
+      background: #fff;
+      padding: 32px 28px 28px 28px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      position: relative;
+    }
+    .quiz-section {
+      background: #e8f5e9;
+      margin-bottom: 0;
+      min-height: 180px;
+      align-items: stretch;
+    }
+    .quiz-section h3 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: #2e7d32;
+      letter-spacing: 0.4px;
+      text-align: left;
+    }
+    #questionText {
+      font-size: 1.08rem;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: #23432a;
+      min-height: 28px;
+      display: flex;
+      align-items: center;
+    }
+    #options {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    #options button {
+      background: #fff;
+      color: #23432a;
+      border: 1.5px solid #b2dfdb;
+      border-radius: 8px;
+      font-size: 1.01rem;
+      font-weight: 500;
+      padding: 12px 14px;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+      width: 100%;
+      box-shadow: none;
+      text-align: left;
+    }
+    #options button.selected, #options button.correct {
+      background: #43a047;
+      color: #fff;
+      border: 1.5px solid #388e3c;
+    }
+    #options button.wrong {
+      background: #ffcdd2;
+      color: #b71c1c;
+      border: 1.5px solid #e57373;
+    }
+    #options button:hover {
+      background: #c8e6c9;
+      color: #23432a;
+    }
+    #scoreDisplay {
+      font-size: 1.08rem;
+      font-weight: 700;
+      color: #2e7d32;
+      margin-top: 16px;
+      text-align: center;
+    }
+    .quiz-section button.next-btn {
+      background: #43a047;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 0;
+      font-size: 1.01rem;
+      font-weight: 700;
+      margin-top: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.10);
+      transition: background 0.2s, transform 0.1s;
+      min-width: 100px;
+      width: 100%;
+    }
+    .quiz-section button.next-btn:hover, .quiz-section button.next-btn:focus {
+      background: #388e3c;
+      color: #fff;
+      transform: translateY(-2px) scale(1.03);
+    }
+    .explanation-area {
+      background: #fff;
+      min-height: 120px;
+      margin-top: 0;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .explanation-area h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #2e7d32;
+      margin-bottom: 8px;
+      margin-top: 0;
+    }
+    #explanation-text {
+      font-size: 1.08rem;
+      color: #23432a;
+      line-height: 1.7;
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      white-space: pre-line;
+      margin-top: 0;
+      margin-bottom: 0;
+      width: 100%;
+      word-break: break-word;
+    }
+    /* Full-page loading overlay */
+    #fullpage-loader {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(255,255,255,0.7);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    #fullpage-loader .loading-spinner {
+      margin-bottom: 18px;
+    }
+    #fullpage-loader .loading-text {
+      font-size: 1.2rem;
+      color: #43a047;
+      font-weight: 700;
+      text-align: center;
+    }
+    @media (max-width: 900px) {
+      .sidebar {
+        min-width: 110px;
+        max-width: 150px;
+        padding: 12px 2px 8px 0;
+        margin-left: 18px;
+      }
+      .sidebar h1, .sidebar .topic-section-title {
+        padding-left: 8px;
+        font-size: 1.1rem;
+      }
+      .sidebar .actions {
+        padding-left: 8px;
+      }
+      .topic-list {
+        padding: 10px 0 10px 0;
+        border-radius: 14px;
+      }
+      .topic-btn {
+        font-size: 0.97rem;
+        padding: 9px 0;
+      }
+      .sidebar::before {
+        left: -14px;
+        width: 14px;
+      }
+      .card-container {
+        margin-top: 18px;
+        max-width: 98vw;
+        padding: 0 6px;
+      }
+    }
+    @media (max-width: 600px) {
+      .app-shell {
+        flex-direction: column;
+        align-items: stretch;
+        min-height: 100vh;
+        width: 100vw;
+        padding: 0;
+      }
+      .sidebar {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: flex-start;
+        min-width: 0;
+        max-width: 100vw;
+        width: 100vw;
+        border-radius: 0 0 18px 18px;
+        box-shadow: 0 2px 16px #b2dfdb44;
+        margin-left: 0;
+        padding: 0 0 0 0;
+        position: relative;
+        z-index: 10;
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+      }
+      .sidebar::before {
+        display: none;
+      }
+      .sidebar h1 {
+        font-size: 1.05rem;
+        padding: 8px 0 8px 8px;
+        margin-bottom: 0;
+        min-width: 120px;
+        flex: 1 1 120px;
+      }
+      .sidebar .topic-section-title {
+        font-size: 0.98rem;
+        padding-left: 6px;
+        margin-bottom: 0;
+        min-width: 80px;
+        flex: 1 1 80px;
+      }
+      .topic-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+        border-radius: 8px;
+        padding: 4px 0 4px 0;
+        min-width: 0;
+        width: auto;
+        background: rgba(255,255,255,0.7);
+        box-shadow: none;
+        margin-bottom: 0;
+      }
+      .topic-btn {
+        font-size: 0.89rem;
+        padding: 7px 10px;
+        min-width: 80px;
+        width: auto;
+        margin: 0 2px;
+        border-radius: 999px;
+        flex: 1 1 80px;
+      }
+      .sidebar .divider {
+        display: none;
+      }
+      .sidebar .actions {
+        flex-direction: row;
+        gap: 6px;
+        padding-left: 4px;
+        width: auto;
+        margin: 0 0 0 8px;
+      }
+      .sidebar button {
+        font-size: 0.97rem;
+        padding: 10px 8px;
+        min-width: 80px;
+        width: auto;
+        border-radius: 8px;
+      }
+      .main-content {
+        padding: 0;
+        margin: 0;
+        min-width: 0;
+        width: 100vw;
+      }
+      .card-container {
+        margin-top: 12px;
+        max-width: 100vw;
+        padding: 0 2vw;
+        gap: 18px;
+      }
+      .quiz-section, .explanation-area {
+        padding: 18px 8px 14px 8px;
+        border-radius: 10px;
+        font-size: 0.97rem;
+      }
+      .quiz-section h3 {
+        font-size: 1.01rem;
+        margin-bottom: 10px;
+      }
+      #questionText {
+        font-size: 0.97rem;
+        min-height: 20px;
+      }
+      #options button {
+        font-size: 0.93rem;
+        padding: 8px 8px;
+        border-radius: 6px;
+      }
+      #scoreDisplay {
+        font-size: 0.97rem;
+        min-height: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-  <h1>JavaScript Doubt Solver 💡</h1>
-
-  <label for="topicSelect">Select a topic:</label>
-  <select id="topicSelect">
-    <option value="">--Choose a topic--</option>
-    <option value="variables">Variables</option>
-    <option value="data types">Data Types</option>
-    <option value="functions">Functions</option>
-    <option value="loops">Loops</option>
-    <option value="array">Array</option>
-    <option value="if-else">If else</option>
-    <option value="DOM">DOM Manipulation</option>
-    <!-- Add more topics here -->
-  </select>
-
-  <br/><br/>
-  <button onclick="solveDoubt()">Get Explanation & Quiz</button>
-
-  <h2>🧠 Explanation</h2>
-  <pre id="response">Explanation will appear here...</pre>
-
-  <button onclick="startQuiz()" id="startQuizBtn" style="display:none;">Start Quiz</button>
-
-  <div id="quizContainer" style="display:none;">
-    <h2>📝 Quiz</h2>
-    
-    <p id="questionText"></p>
-    <div id="options"></div>
-    <button onclick="nextQuestion()">Next</button>
+  <div id="fullpage-loader">
+    <div class="loading-spinner">
+      <svg width="64" height="64" viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none" stroke="#43a047" stroke-width="5" stroke-linecap="round" stroke-dasharray="31.4 31.4" transform="rotate(-90 25 25)"><animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/></circle></svg>
+    </div>
+    <div class="loading-text">Loading explanation and quiz...</div>
   </div>
-
-  <p id="scoreDisplay"></p>
-
+  <div class="app-shell">
+    <aside class="sidebar">
+      <h1>JS Topic Doubt Solver <span style="font-size:1.5rem;">💡</span></h1>
+      <div class="topic-section-title">Topics</div>
+      <div class="topic-list" id="topicList">
+        <button class="topic-btn" data-topic="variables">Variables</button>
+        <button class="topic-btn" data-topic="data types">Data Types</button>
+        <button class="topic-btn" data-topic="functions">Functions</button>
+        <button class="topic-btn" data-topic="loops">Loops</button>
+        <button class="topic-btn" data-topic="array">Array</button>
+        <button class="topic-btn" data-topic="if-else">If else</button>
+        <button class="topic-btn" data-topic="DOM">DOM Manipulation</button>
+      </div>
+      <div class="divider"></div>
+      <div class="actions">
+        <button id="getExplanationBtn">Get Explanation & Quiz</button>
+        <button id="startQuizBtn" style="display:none;">Start Quiz</button>
+      </div>
+    </aside>
+    <main class="main-content">
+      <div class="card-container">
+        <p id="scoreDisplay" style="margin-bottom: 0; margin-top: 0; font-size:1.08rem; font-weight:600; color:#2e7d32; text-align:center; min-height:32px;"></p>
+        <section class="quiz-section" id="quizContainer" style="display:none;">
+          <h3>Multiple Choice Questions</h3>
+          <div id="questionText"><span id="quiz-loading" style="display:none;" class="loading-spinner"><svg viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none" stroke="#43a047" stroke-width="5" stroke-linecap="round" stroke-dasharray="31.4 31.4" transform="rotate(-90 25 25)"><animateTransform attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="1s" repeatCount="indefinite"/></circle></svg></span><span id="question-text-span"></span></div>
+          <div id="options"></div>
+          <button class="next-btn" onclick="nextQuestion()">Next</button>
+        </section>
+        <section class="explanation-area">
+          <h2>Definition / Explanation</h2>
+          <div id="explanation-text">Select a topic and click "Get Explanation & Quiz" to begin.</div>
+        </section>
+      </div>
+    </main>
+  </div>
   <script src="script.js"></script>
-</div>
+  <script>
+    // Sidebar topic selection logic
+    const topicList = document.getElementById('topicList');
+    let selectedTopic = '';
+    // Hide loader on page load (in case of reload or cache)
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('fullpage-loader').style.display = 'none';
+    });
+    if (topicList) {
+      topicList.addEventListener('click', function(e) {
+        if (e.target.classList.contains('topic-btn')) {
+          Array.from(topicList.children).forEach(btn => btn.classList.remove('selected'));
+          e.target.classList.add('selected');
+          selectedTopic = e.target.getAttribute('data-topic');
+        }
+      });
+    }
+    // Button logic
+    document.getElementById('getExplanationBtn').onclick = async function() {
+      if (!selectedTopic) {
+        document.getElementById('explanation-text').textContent = 'Please select a topic first.';
+        return;
+      }
+      showFullPageLoader();
+      await solveDoubt(selectedTopic);
+    };
+    // Full-page loader logic
+    function showFullPageLoader() {
+      document.getElementById('fullpage-loader').style.display = 'flex';
+    }
+    function hideFullPageLoader() {
+      document.getElementById('fullpage-loader').style.display = 'none';
+    }
+    // Show/hide explanation loader (kept for explanation area only)
+    function showExplanationLoading() {
+      const loader = document.getElementById('explanation-loader');
+      const text = document.getElementById('explanation-text');
+      if (loader) loader.style.display = '';
+      if (text) text.textContent = '';
+    }
+    function hideExplanationLoading() {
+      const loader = document.getElementById('explanation-loader');
+      if (loader) loader.style.display = 'none';
+    }
+    // Patch solveDoubt to use the new loader
+    const origSolveDoubt = window.solveDoubt;
+    window.solveDoubt = async function(topic) {
+      showExplanationLoading();
+      try {
+        await origSolveDoubt.apply(this, arguments);
+      } finally {
+        hideExplanationLoading();
+        hideFullPageLoader();
+      }
+    }
+  </script>
 </body>
 </html>
