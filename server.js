@@ -1,5 +1,3 @@
-
-
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -23,26 +21,31 @@ app.post('/api/getExplanationAndQuiz', async (req, res) => {
 try {
 
 const prompt = `
-Give a short and clear explanation of the topic "${topic}" in JavaScript. 
+Explain the topic "${topic}" in JavaScript using the Why–What–How–Where format:
 
-Include:
-- Proper syntax with an example
-- Where conditions are written (inside which brackets)
-- Explanation of how different brackets are used:
-   - Round brackets () for conditions, function calls, and parameters
-   - Curly brackets {} for grouping a block of code (like in if, loops, and functions)
-   - Square brackets [] for arrays and accessing elements by index
+1. Why use ${topic}?
+- Explain why this concept is important, with a real-life analogy or scenario that makes it memorable for beginners.
 
-After the explanation, generate 15 multiple choice questions (MCQs) based on this topic and explanation. 
-Each question should be related to the concept, syntax, and bracket usage described above.
+2. What is ${topic}?
+- Give a clear, beginner-friendly definition. Use simple language and a relatable metaphor if possible.
+
+3. How do we use ${topic}?
+- Show the syntax and a practical code example. Explain each part of the code step by step.
+
+4. Where is ${topic} used in real projects?
+- Give a real-world use case or scenario where this concept is essential in JavaScript development.
+
+Make the explanation detailed, practical, and easy to understand for someone new to programming. Avoid jargon. Use bullet points or short paragraphs for clarity.
+
+After the explanation, generate 10 multiple choice questions (MCQs) based on this topic and explanation. Each question should be related to the concept, its use, and practical understanding.
 
 Format each MCQ like this:
-Q1. What is the correct way to write a condition in an if statement?
-A. if {x > 10}
-B. if [x > 10]
-C. if (x > 10)
-D. if x > 10
-Answer: C
+Q1. ...
+A. ...
+B. ...
+C. ...
+D. ...
+Answer: ...
 `;
 
 
@@ -88,5 +91,8 @@ Answer: C
 app.listen(PORT, () => {
   console.log(`✅ Server is running at http://localhost:${PORT}`);
 });
+
+
+
 
 
