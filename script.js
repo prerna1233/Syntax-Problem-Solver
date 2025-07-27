@@ -35,7 +35,23 @@ async function solveDoubt(topic) {
       return;
     }
     const [explanation] = reply.split(/Q\d+\./);
-    if (explanationBox) explanationBox.innerText = explanation.trim();
+    if (explanationBox) {
+      // Try to extract a heading from the explanation (e.g., What is Variable?)
+      let heading = '';
+      const whatMatch = explanation.match(/What is ([^?]+)\?/i);
+      if (whatMatch) {
+        heading = `What is ${whatMatch[1].trim()}?`;
+      } else {
+        // fallback: use first line as heading
+        heading = explanation.split('\n')[0].trim();
+      }
+      let formatted = explanation
+        .replace(/(Why use [^?]+\?)/i, '<span style="color:#2e7d32;font-weight:700;">$1</span>')
+        .replace(/(What is [^?]+\?)/i, '<span style="color:#388e3c;font-weight:700;">$1</span>')
+        .replace(/(How do we use [^?]+\?)/i, '<span style="color:#1976d2;font-weight:700;">$1</span>')
+        .replace(/(Where is [^?]+\?)/i, '<span style="color:#8e24aa;font-weight:700;">$1</span>');
+      explanationBox.innerHTML = `<div style='font-size:1.13rem;font-weight:800;margin-bottom:6px;'>${heading}</div>` + formatted.trim();
+    }
     const quizRegex = /Q\d+\.\s*(.*?)\nA\.\s*(.*?)\nB\.\s*(.*?)\nC\.\s*(.*?)\nD\.\s*(.*?)\nAnswer:\s*([A-D])/g;
     quizData = [];
     let match;
